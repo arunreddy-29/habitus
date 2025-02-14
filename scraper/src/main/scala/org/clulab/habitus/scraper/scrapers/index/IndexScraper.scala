@@ -69,7 +69,10 @@ class CorpusIndexScraper(val corpus: PageCorpus) {
     new GoogleIndexScraper(),
     new MiningReviewIndexScraper(),
     new MiningIndexScraper(),
-    new SyriaDirectIndexScraper()
+    new SyriaDirectIndexScraper(),
+    new SanaIndexScraper(),
+    new NorthPressAgencyIndexScraper(),
+    new SyrianObserverIndexScraper()
   )
 
   def getPageScraper(page: Page): PageIndexScraper = {

@@ -1,3 +1,3 @@
 package org.clulab.habitus.scraper.domains
 
-object SanaDomain extends Domain("sana.sy/en")
+object SanaDomain extends Domain("sana.sy")

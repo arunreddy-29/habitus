@@ -54,7 +54,8 @@ class PageCorpusDownloader(val corpus: PageCorpus) {
     new ReliefWebDownloader(),
     new SanaDownloader(),
     new SyriaDirectDownloader(),
-    new SyrianObserverDownloader()
+    new SyrianObserverDownloader(),
+    new SyriaReportDownloader()
   )
 
   def getPageDownloader(page: Page): PageDownloader = {
@@ -126,7 +127,8 @@ class SearchCorpusDownloader(val corpus: SearchCorpus) {
     new ReliefWebDownloader(),
     new SanaDownloader(),
     new SyriaDirectDownloader(),
-    new SyrianObserverDownloader()
+    new SyrianObserverDownloader(),
+    new SyriaReportDownloader()
   )
 
   def getPageDownloader(page: Page): PageDownloader = {

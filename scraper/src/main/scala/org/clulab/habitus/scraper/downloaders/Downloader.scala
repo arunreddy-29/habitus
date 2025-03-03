@@ -55,7 +55,19 @@ class PageCorpusDownloader(val corpus: PageCorpus) {
     new SanaDownloader(),
     new SyriaDirectDownloader(),
     new SyrianObserverDownloader(),
-    new SyriaReportDownloader()
+    new SyriaReportDownloader(),
+    new SyriaTimesDownloader(),
+    new SnhrDownloader(),
+    new SyriaHrDownloader(),
+    new CoarGlobalDownloader(),
+    new ZamanaDownloader(),
+    new WfpsusaDownloader(),
+    new DeeplyHumanitarianDownloader(),
+    new WorldHungerDownloader(),
+    new ABCDownloader(),
+    new WeForumDomainDownloader(),
+    new MercyCorpsDownloader(),
+    new CNNDownloader()
   )
 
   def getPageDownloader(page: Page): PageDownloader = {
@@ -128,7 +140,19 @@ class SearchCorpusDownloader(val corpus: SearchCorpus) {
     new SanaDownloader(),
     new SyriaDirectDownloader(),
     new SyrianObserverDownloader(),
-    new SyriaReportDownloader()
+    new SyriaReportDownloader(),
+    new SyriaTimesDownloader(),
+    new SnhrDownloader(),
+    new SyriaHrDownloader(),
+    new ZamanaDownloader(),
+    new CoarGlobalDownloader(),
+    new WfpsusaDownloader(),
+    new DeeplyHumanitarianDownloader(),
+    new WorldHungerDownloader(),
+    new ABCDownloader(),
+    new WeForumDomainDownloader(),
+    new MercyCorpsDownloader(),
+    new CNNDownloader()
   )
 
   def getPageDownloader(page: Page): PageDownloader = {

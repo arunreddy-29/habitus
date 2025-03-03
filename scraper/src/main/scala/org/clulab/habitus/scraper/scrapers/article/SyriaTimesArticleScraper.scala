@@ -4,16 +4,13 @@ import net.ruippeixotog.scalascraper.browser.Browser
 import net.ruippeixotog.scalascraper.dsl.DSL._
 import net.ruippeixotog.scalascraper.dsl.DSL.Extract._
 import org.clulab.habitus.scraper.Page
-import org.clulab.habitus.scraper.domains.SyriaReportDomain
+import org.clulab.habitus.scraper.domains.SyriaTimesDomain
 import org.clulab.habitus.scraper.scrapes.ArticleScrape
 import org.json4s.DefaultFormats
 
 import java.net.URL
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import scala.util.Try
 
-class SyriaReportArticleScraper extends PageArticleScraper(SyriaReportDomain) {
+class SyriaTimesArticleScraper extends PageArticleScraper(SyriaTimesDomain) {
   implicit val formats: DefaultFormats.type = DefaultFormats
 
   def scrape(browser: Browser, page: Page, html: String): ArticleScrape = {
@@ -24,20 +21,15 @@ class SyriaReportArticleScraper extends PageArticleScraper(SyriaReportDomain) {
       .orElse(doc >?> element("title").map(_.text))
 
     // Extract Publication Date
-    val rawDate = doc >?> element("time.date-container.minor-meta.updated") map (_.text)
+    // Extract Publication Date
+    val date = (doc >?> element("time.post-published.updated")).map(_.attr("datetime"))
+      .orElse(doc >?> element("time.post-published.updated b").map(_.text))
 
-    val date = rawDate.flatMap { dateStr =>
-      Try {
-        val parsed = LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("dd-MM-yyyy"))
-        // 3. Convert the parsed date to ISO 8601, e.g. "2020-10-14"
-        parsed.format(DateTimeFormatter.ISO_LOCAL_DATE)
-      }.toOption
-    }
-    // Extract Author
-    val author = (doc >?> element("meta[name='author']")).map(_.attr("content")).orElse(Some("Syria Report"))
+    // Extract Author (Fallback to "Syrian Times" if not found)
+    val author = (doc >?> element("meta[name='author']")).map(_.attr("content")).orElse(Some("Syrian Times"))
 
     // Extract Article Content
-    val paragraphs = doc >> elementList(".entry-content p, .post-content p, .article-body p")
+    val paragraphs = doc >> elementList(".entry-content p")
     val text = paragraphs.map(_.text.trim).filter(_.nonEmpty).mkString("\n\n")
 
     // Extract URL

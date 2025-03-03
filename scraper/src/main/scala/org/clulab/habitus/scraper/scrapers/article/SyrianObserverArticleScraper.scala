@@ -25,7 +25,7 @@ class SyrianObserverArticleScraper extends PageArticleScraper(SyrianObserverDoma
     val author = (doc >?> element("meta[name='author']")).map(_.attr("content")).orElse(Some("The Syrian Observer"))
 
     // Extracting Article Content
-    val paragraphs = doc >> elementList("article p, .entry-content p, .post-content p")
+    val paragraphs = doc >> elementList("div.elementor-widget-container p")
     val text = paragraphs.map(_.text.trim).filter(_.nonEmpty).mkString("\n\n")
 
     // Return structured article data

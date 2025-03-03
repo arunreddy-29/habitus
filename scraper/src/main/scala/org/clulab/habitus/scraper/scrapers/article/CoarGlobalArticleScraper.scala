@@ -4,16 +4,13 @@ import net.ruippeixotog.scalascraper.browser.Browser
 import net.ruippeixotog.scalascraper.dsl.DSL._
 import net.ruippeixotog.scalascraper.dsl.DSL.Extract._
 import org.clulab.habitus.scraper.Page
-import org.clulab.habitus.scraper.domains.SyriaReportDomain
+import org.clulab.habitus.scraper.domains.CoarGlobalDomain
 import org.clulab.habitus.scraper.scrapes.ArticleScrape
 import org.json4s.DefaultFormats
 
 import java.net.URL
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import scala.util.Try
 
-class SyriaReportArticleScraper extends PageArticleScraper(SyriaReportDomain) {
+class CoarGlobalArticleScraper extends PageArticleScraper(CoarGlobalDomain) {
   implicit val formats: DefaultFormats.type = DefaultFormats
 
   def scrape(browser: Browser, page: Page, html: String): ArticleScrape = {
@@ -24,20 +21,13 @@ class SyriaReportArticleScraper extends PageArticleScraper(SyriaReportDomain) {
       .orElse(doc >?> element("title").map(_.text))
 
     // Extract Publication Date
-    val rawDate = doc >?> element("time.date-container.minor-meta.updated") map (_.text)
+    val date = (doc >?> element("meta[property='article:published_time']")).map(_.attr("content"))
 
-    val date = rawDate.flatMap { dateStr =>
-      Try {
-        val parsed = LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("dd-MM-yyyy"))
-        // 3. Convert the parsed date to ISO 8601, e.g. "2020-10-14"
-        parsed.format(DateTimeFormatter.ISO_LOCAL_DATE)
-      }.toOption
-    }
     // Extract Author
-    val author = (doc >?> element("meta[name='author']")).map(_.attr("content")).orElse(Some("Syria Report"))
+    val author = (doc >?> element("meta[name='author']")).map(_.attr("content")).orElse(Some("COAR Global"))
 
-    // Extract Article Content
-    val paragraphs = doc >> elementList(".entry-content p, .post-content p, .article-body p")
+    // Extract Article Content (Handles different formats)
+    val paragraphs = doc >> elementList("p[style='text-align: justify;'], p[style='text-align: justify; text-indent: 70px;'], span[style='font-weight: 400;']")
     val text = paragraphs.map(_.text.trim).filter(_.nonEmpty).mkString("\n\n")
 
     // Extract URL

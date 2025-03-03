@@ -74,7 +74,22 @@ class CorpusIndexScraper(val corpus: PageCorpus) {
     new NorthPressAgencyIndexScraper(),
     new SyrianObserverIndexScraper(),
     new EnabBaladiIndexScraper(),
-    new SyriaReportIndexScraper()
+    new SyriaReportIndexScraper(),
+    new SyriaTimesIndexScraper(),
+    new SnhrIndexScraper(),
+    new SyriaHrIndexScraper(),
+    new ZamanaIndexScraper(),
+    new CeobsIndexScraper(),
+    new CoarGlobalIndexScraper(),
+    new GulfTimesIndexScraper(),
+    new ReliefWebIndexScraper(),
+    new WfpusaIndexScraper(),
+    new DeeplyHumanitarianIndexScraper(),
+    new WorldHungerIndexScraper(),
+    new ABCIndexScraper(),
+    new WeForumIndexScraper(),
+    new MercyCorpsIndexScraper(),
+    new CNNIndexScraper()
   )
 
   def getPageScraper(page: Page): PageIndexScraper = {
